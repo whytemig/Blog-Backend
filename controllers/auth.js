@@ -1,4 +1,6 @@
-const { User } = require("../models/users");
+const  User  = require("../models/users");
+const jwt = require('jsonwebtoken');
+const cookieParser = require("cookie-parser");
 
 const errorHandle = (err) => {
   let errors = {
@@ -33,27 +35,37 @@ const singupGet = (req, res) => {
     email,
     password,
     title: "My Blog",
-    display: "Sign Up",
+    display: "Sign Up"
   });
 };
 
 const singupPost = async (req, res) => {
+  const id = req.params._id;
   const { firstName, lastName, username, email, password } = req.body;
   try {
-    const data = await User.create({
+    const user = await User.create({
       firstName,
       lastName,
       username,
       email,
       password,
+      id
+    });
+    
+    // After the user has been created, a web-token is given to verify the user. 
+    const token = await jwt.sign({id}, 'Mysecret', {
+      expiresIn:'1h'
     });
 
-    res
-      .send({data})
-      .status(201)
+    res.cookie('jwt', token, { httpOnly: true, maxAge: })
+    
+
+    console.log(user);
+    res.redirect('/');
   } catch (err) {
-    const error = errorHandle(err);
-    res.send(error);
+    console.log(err)
+    const errors = errorHandle(err);
+    res.send(errors);
   }
 };
 
