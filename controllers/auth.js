@@ -1,4 +1,5 @@
-const { User } = require("../models/users");
+const  User  = require("../models/User");
+const  Blog  = require("../models/Blog");
 
 const errorHandle = (err) => {
   let errors = {
@@ -64,9 +65,40 @@ const loginInPost = (req, res) => {
   res.render("", {});
 };
 
+const createBlog = async (req, res) => {
+  const { title, description, date, img } = req.body;
+  res.render('createblog', {
+      title,
+      description,
+      date,
+      img,
+    });
+};
+
+const createdBlog = async (req, res) => {
+  const { title, description, date,img, meta } = req.body;
+  try {
+    const data = await Blog.create({
+      title,
+      description,
+      date,
+      img,
+      meta
+    });
+    res
+      .send({data})
+      .status(201)
+  } catch (err) {
+    const error = errorHandle(err);
+    res.send(error);
+  }
+};
+
 module.exports = {
   singupGet,
   singupPost,
   loginInGet,
   loginInPost,
+  createBlog,
+  createdBlog
 };
