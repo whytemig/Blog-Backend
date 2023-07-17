@@ -44,6 +44,4 @@ router.get()
 
 router.post()
 
-// show all blogs
-
 module.exports = router;
