@@ -29,7 +29,7 @@ const connect = async ()=>{
     await mongoose.connect(process.env.URI)
     .then(()=> console.log('Database Connected'))
     .catch((error)=>{console.error(error)});
-
+    
     app.listen(process.env.PORT, ()=> console.log('The port is connected'));
 }
 connect();

@@ -2,6 +2,9 @@ const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 const validator = require('validator');
 const bcrypt = require("bcrypt");
+const  myBlog  = require('../models/Blog');
+const multer = require('multer');
+
 
 
 
@@ -66,8 +69,6 @@ const singupPost =  async (req, res) => {
 };
 }
 
-
-
 // Get the login page and render the variables on the login page. 
 const loginInGet = (req, res) => {
   res.render("login", {
@@ -111,6 +112,47 @@ const loginInPost = async (req, res) => {
 
 }
 
+const getCreateBlog = async (req, res) => {
+  const { title, description, date, img } = req.body;
+
+  res.render('createblog', {
+    display: "Create a Blog",
+      title,
+      description,
+      date,
+      img,
+    });
+};
+const postCreatedBlog = async (req, res) => {
+  const { title, description, content, date, votes, img  } = req.body;
+
+  try {
+    const data = new myBlog({
+      title,
+      description,
+      content,
+      date,
+      votes,
+      img
+    });
+
+    let imgData = data.img;
+
+    imgData.data = req.file.buffer;
+    imgData.contentType = req.file.mimetype;
+    
+    await data.save()
+
+    console.log(data);
+   
+    res.redirect('/gallery')
+
+  } catch (err) {
+    console.log(err)
+    res.send(err.message);
+  }
+};
+
 
   
 
@@ -121,4 +163,6 @@ module.exports = {
   singupPost,
   loginInGet,
   loginInPost,
+  getCreateBlog,
+  postCreatedBlog
 };
