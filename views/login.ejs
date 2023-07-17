@@ -1,0 +1,52 @@
+<%- include('../partials/header') %> <%- include('../partials/nav') %>
+
+
+
+<div class="d-flex row justify-content-center m-5">
+  <div class="col-lg-6 justify-content-center col-md-6">
+    <form action="/blog/login" method="post">
+      <div class="row g-3 form-control p-1 my-1">
+
+        <div class="text-center">
+          <h1 class="mb-1"><%= display %></h1>
+        </div>
+
+        <div class="col-auto my-3">
+          <label for="username" class="form-label fw-bold">Username:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Ex: johnsmithuser"
+            required
+          />
+        </div>
+
+        <div class="col-auto my-3">
+          <label for="password" class="form-label fw-bold">Password:</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Minimum of 6 characters"
+            required
+          />
+        </div>
+
+        <div class="col-auto my-3">
+          <button type="submit" class="btn btn-primary form-control">
+            Login In
+          </button>
+        </div>
+      </div>
+      <div><a href="/blog">Go Back</a></div>
+
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+</html>

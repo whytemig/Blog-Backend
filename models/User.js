@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const {isEmail} = require('validator');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 
 const userShema = new mongoose.Schema({
@@ -40,12 +38,6 @@ const userShema = new mongoose.Schema({
    }
 });
 
-
-// pre save it (password) and then hash it using bcrypt before saving it to the DB. This could be a middleware as well. 
-userShema.pre('save', async function(next) {
-   this.password = await bcrypt.hashSync(this.password, saltRounds);
-   next();
-});
 
 // variable storing the model with the data. 
 const User = mongoose.model('user', userShema);

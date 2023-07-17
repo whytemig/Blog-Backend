@@ -1,0 +1,17 @@
+body{
+    background-color: rgb(238, 225, 208);
+    position:relative;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    border-top: solid 1px #eee;
+  }
+
+  .section{
+    width: 100%;
+    height: 88vh;
+  }

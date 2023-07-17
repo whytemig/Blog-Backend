@@ -17,12 +17,15 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+const  User  = require('../models/users')
+const { singupPost, singupGet, loginInGet, loginInPost } = require('../controllers/auth')
 
 
 router.get('/', (req, res)=>{
     res.render('index', {title: 'MyBlog'})
 })
 
+// signup
 router.get('/signup', singupGet);
 
 router.post('/signup', singupPost);
@@ -31,6 +34,16 @@ router.get('/createblog', createBlog);
 
 router.post('/createdblog', upload.single('image'), createdBlog);
 
+// login
+router.get('/login', loginInGet);
 
+router.post('/login', loginInPost);
+
+// create blog
+router.get()
+
+router.post()
+
+// show all blogs
 
 module.exports = router;

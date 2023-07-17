@@ -1,69 +1,122 @@
 const  User  = require("../models/User");
 const  Blog  = require("../models/Blog");
+// const User = require("../models/users");
+const jwt = require("jsonwebtoken");
+const validator = require('validator');
+const bcrypt = require("bcrypt");
 
-const errorHandle = (err) => {
-  let errors = {
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    password: "",
-  };
 
-  if (err.code === 11000) {
-    errors.email = "that email is already registered";
-    return errors;
-  }
 
-  if (err.message.includes("user validation failed")) {
-    Object.values(err.errors).forEach(({ properties }) => {
-      errors[properties.path] = properties.message;
-    });
-  }
-
-  return errors;
-};
-
+// Get the webpage and render the variables to the ejs page.
 const singupGet = (req, res) => {
-  const { firstName, lastName, username, email, password } = req.body;
-
+  
   res.render("signup", {
-    firstName,
-    lastName,
-    username,
-    email,
-    password,
     title: "My Blog",
     display: "Sign Up",
+    errorMessage:''
   });
+
 };
 
-const singupPost = async (req, res) => {
-  const { firstName, lastName, username, email, password } = req.body;
+
+// Post functionality for the signin page.
+const singupPost =  async (req, res) => {
+  const id = req.params._id;
+  let { firstName, lastName, username, email, password } = req.body;
+  
+  password = await bcrypt.hashSync(password, 10);
+  console.log(password)
+  
   try {
-    const data = await User.create({
+    const user = await User.create({
       firstName,
       lastName,
       username,
       email,
       password,
+      id
+    });
+    
+   
+    console.log(password)
+
+    // After the user has been created, a web-token is given to verify the user.
+    //create jwt token
+    const token = await jwt.sign({ id }, "Mysecret", {
+      expiresIn: "2h",
     });
 
-    res
-      .send({data})
-      .status(201)
+    console.log(`token: ${token}`)
+
+    //save token in cookie
+    res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000 });
+    res.redirect("/blog/login");
+
   } catch (err) {
-    const error = errorHandle(err);
-    res.send(error);
+    let text = err.message;
+
+    if (validator.isEmail(email)) {
+     res.redirect('/blog/login')
+    } else{
+      res.render("signup", { 
+        errorMessage: text.split('user validation failed:').join(),
+        title: "My Blog",
+        display: "Sign Up"
+      });
   }
+  
+};
+}
+
+
+
+// Get the login page and render the variables on the login page. 
+const loginInGet = (req, res) => {
+  res.render("login", {
+    title: "My Blog",
+    display: "Login" });
 };
 
-const loginInGet = (req, res) => {
-  res.render("", {});
-};
-const loginInPost = (req, res) => {
-  res.render("", {});
-};
+
+// find the user by id, compare password, then Authorize them to enter the official site. 
+const loginInPost = async (req, res) => {
+  const id = req.params._id;
+  const {username, password} = req.body;
+ 
+  try{
+  const data = await User.findOne({ username });
+
+  if(data){
+    const hashP = bcrypt.hashSync(data.password, 10);
+    let result = await bcrypt.compare(data.password, hashP);
+
+    console.log(password, hashP)
+
+    if(result){
+      const token = await jwt.sign({ id }, "Mysecret", {
+        expiresIn: "2h",
+      });
+      // Save token in cookie
+      res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true });
+
+      console.log( result);
+      res.redirect('/');
+    
+    }else{
+      console.log('incorrect password')
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  }
+  }catch(err){
+    console.log(err.message)
+  }
+
+}
+
+
+  
+
+
 
 const createBlog = async (req, res) => {
   const { title, description, date, img } = req.body;

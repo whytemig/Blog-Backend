@@ -4,15 +4,18 @@ const ejs = require('ejs');
 require('dotenv').config();
 const app = express();
 const path = require('path');
+const cookieParser = require('cookie-parser');
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
 const blogRouter = require('./routes/routes');
-const userBlog = require('./models/Blog.js');
 
 // Template view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // Middlewares
-app.use(express.json());
+app.use(cookieParser());
+// 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
