@@ -6,8 +6,6 @@ const app = express();
 const path = require('path');
 const blogRouter = require('./routes/routes');
 const userBlog = require('./models/Blog.js');
-const PORT = 4000 || process.env.PORT;
-// const connect = require('./config/database');
 
 // Template view engine
 app.set('views', path.join(__dirname, 'views'));

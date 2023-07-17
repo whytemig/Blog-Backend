@@ -29,9 +29,6 @@ const blogSchema = new mongoose.Schema({
   
 });
 
-// variable storing the model with the data. 
-// const Blog = mongoose.model('blog', blogSchema);
-
 module.exports = mongoose.model('Blog', blogSchema)
 
 // Look in mongo for layout and syntax
