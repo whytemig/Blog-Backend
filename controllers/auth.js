@@ -4,6 +4,9 @@ const  Blog  = require("../models/Blog");
 const jwt = require("jsonwebtoken");
 const validator = require('validator');
 const bcrypt = require("bcrypt");
+const  myBlog  = require('../models/Blog');
+const multer = require('multer');
+
 
 
 
@@ -68,8 +71,6 @@ const singupPost =  async (req, res) => {
 };
 }
 
-
-
 // Get the login page and render the variables on the login page. 
 const loginInGet = (req, res) => {
   res.render("login", {
@@ -113,12 +114,50 @@ const loginInPost = async (req, res) => {
 
 }
 
+const getCreateBlog = async (req, res) => {
+  const { title, description, date, img } = req.body;
 
-  
+  res.render('createblog', {
+    display: "Create a Blog",
+      title,
+      description,
+      date,
+      img,
+    });
+};
+const postCreatedBlog = async (req, res) => {
+  const { title, description, content, date, votes, img  } = req.body;
+
+  try {
+    const data = new myBlog({
+      title,
+      description,
+      content,
+      date,
+      votes,
+      img
+    });
+
+    let imgData = data.img;
+
+    imgData.data = req.file.buffer;
+    imgData.contentType = req.file.mimetype;
+    
+    await data.save()
+
+    console.log(data);
+   
+    res.redirect('/gallery')
+
+  } catch (err) {
+    console.log(err)
+    res.send(err.message);
+  }
+};
 
 
 
-const createBlog = async (req, res) => {
+const getCreateBlog = async (req, res) => {
   const { title, description, date, img } = req.body;
   res.render('createblog', {
       title,
@@ -128,7 +167,7 @@ const createBlog = async (req, res) => {
     });
 };
 
-const createdBlog = async (req, res) => {
+const postCreatedBlog = async (req, res) => {
   const { title, description, date,img, meta } = req.body;
   try {
     const data = await Blog.create({
@@ -152,6 +191,6 @@ module.exports = {
   singupPost,
   loginInGet,
   loginInPost,
-  createBlog,
-  createdBlog
+  getCreateBlog,
+  postCreatedBlog
 };
