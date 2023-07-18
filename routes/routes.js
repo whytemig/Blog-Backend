@@ -2,6 +2,7 @@ const router = require('express').Router();
 const  User  = require('../models/users');
 const  myBlog  = require('../models/Blog');
 const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
+const getGalleryBlogs = require('../controllers/crud')
 const upload = require('../controllers/middleware/multer');
 
 
@@ -25,6 +26,8 @@ router.get('/createblog', getCreateBlog)
 // post all blogs w/ image
 
 router.post('/createblog', upload, postCreatedBlog)
+
+router.get('/gallery', getGalleryBlogs);
 
 
 module.exports = router;

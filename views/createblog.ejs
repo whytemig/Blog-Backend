@@ -1,77 +1,73 @@
-<%- include('../partials/header') %> 
-<%- include('../partials/nav') %>
+<%- include('../partials/header') %> <%- include('../partials/nav') %>
 
-<div class="d-flex row justify-content-center m-auto my-3 p-3">
-  <div class="col-lg-6 justify-content-center col-md-6">
-    <form action="/blog/createblog" method="post" enctype="multipart/form-data">
-      <div class="row g-3 form-control p-1 my-1">
-        <div class="text-center">
-          <h1 class="mb-1"><%= display %></h1>
-        </div>
-
-
-        <div class=" col-auto my-3">
-          <label for="title" class="form-label fw-bold">Title:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="title"
-            name="title"
-          />
-        </div>
-
-        <div class="col-auto my-3">
-          <label for="description" class="form-label fw-bold">Description:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="description"
-            name="description"
-            min="200"
-          />
-        </div>
-
-        <div class="col-auto my-3">
-          <label for="content" class="form-label fw-bold">Content:</label>
-          <textarea
-            type="text"
-            class="form-control"
-            id="content"
-            name="content"
-            rows="5"
-            cols="30"
-            placeholder="Tell us...."
-            required
-          ></textarea>
-        </div>
-
-       
-
-        <div class="col-auto my-3">
-          <label for="image" class="form-label fw-bold">Upload Image:</label>
-          <input
-            type="file"
-            class="form-control"
-            id="image"
-            name="image"
-          />
-        </div>
-
-        <div class="col-auto my-3">
-            <a href="/blog"><button type="submit" class="btn btn-danger form-control">
-              Cancel
-            </button></a>
+  <div class="d-flex row justify-content-center m-auto my-3 p-3">
+    <div class="col-lg-6 justify-content-center col-md-6">
+      <form
+        action="/blog/createblog"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="row g-3 form-control p-1 my-1">
+          <div class="text-center">
+            <h1 class="mb-1"><%= display %></h1>
           </div>
 
+          <div class="col-auto my-3">
+            <label for="title" class="form-label fw-bold">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" />
+          </div>
 
-        <div class="col-auto my-3">
-          <button type="submit" class="btn btn-primary form-control">
-            Add
-          </button>
+          <div class="col-auto my-3">
+            <label for="description" class="form-label fw-bold"
+              >Description:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="description"
+              name="description"
+              min="200"
+            />
+          </div>
+
+          <div class="col-auto my-3">
+            <label for="content" class="form-label fw-bold">Content:</label>
+            <textarea
+              type="text"
+              class="form-control"
+              id="content"
+              name="content"
+              rows="5"
+              cols="30"
+              placeholder="Tell us...."
+              required
+            ></textarea>
+          </div>
+
+          <div class="col-auto my-3">
+            <label for="image" class="form-label fw-bold">Upload Image:</label>
+            <input type="file" class="form-control" id="image" name="image" />
+          </div>
+
+          <div class="col-auto my-3">
+            <a href="/blog"
+              ><button type="submit" class="btn btn-danger form-control">
+                Cancel
+              </button></a
+            >
+          </div>
+
+          <div class="col-auto my-3">
+            <button type="submit" class="btn btn-primary form-control">
+              Add
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<%- include('../partials/footer') %>
+  
+  <%- include('../partials/footer') %>
+
+
