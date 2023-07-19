@@ -21,15 +21,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/', (req, res)=> res.render('index', { title: 'MyBlog' }))
-// app.use('/', indexRouter);
-app.use('/blog', blogRouter)
+
+
+app.use('/', blogRouter)
 
 const connect = async ()=>{
     await mongoose.connect(process.env.URI)
     .then(()=> console.log('Database Connected'))
     .catch((error)=>{console.error(error)});
-    
     app.listen(process.env.PORT, ()=> console.log('The port is connected'));
 }
 

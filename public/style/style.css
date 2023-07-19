@@ -5,7 +5,7 @@ body{
 
 footer {
     position: fixed;
-    bottom: 0;
+    bottom: 0%;
     width: 100%;
     height: 30px;
     border-top: solid 1px #eee;
@@ -14,4 +14,11 @@ footer {
   .section{
     width: 100%;
     height: 88vh;
+  }
+
+  .img-fluid{
+    float: left;
+    width:  200px;
+    height: 200px;
+    background-size: cover;
   }

@@ -6,6 +6,7 @@ const validator = require('validator');
 const bcrypt = require("bcrypt");
 const  myBlog  = require('../models/User');
 const multer = require('multer');
+const fs = require('fs');
 
 
 
@@ -53,13 +54,13 @@ const singupPost =  async (req, res) => {
 
     //save token in cookie
     res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000 });
-    res.redirect("/blog/login");
+    res.redirect("/login");
 
   } catch (err) {
     let text = err.message;
 
     if (validator.isEmail(email)) {
-     res.redirect('/blog/login')
+     res.redirect('/login')
     } else{
       res.render("signup", { 
         errorMessage: text.split('user validation failed:').join(),
@@ -127,8 +128,9 @@ const getCreateBlog = async (req, res) => {
 };
 
 const postCreatedBlog = async (req, res) => {
-  const { title, description, content, date, votes, img  } = req.body;
-
+  const { title, description, content, date, votes  } = req.body;
+  const img = req.file.filename;
+  // console.log(img)
   try {
     const data = new myBlog({
       title,
@@ -136,23 +138,19 @@ const postCreatedBlog = async (req, res) => {
       content,
       date,
       votes,
-      img
+     img
     });
-
-    let imgData = data.img;
-
-    imgData.data = req.file.buffer;
-    imgData.contentType = req.file.mimetype;
     
     await data.save()
-
     console.log(data);
+
    
-    res.redirect('/gallery')
+    res.redirect('/blogs')
 
   } catch (err) {
     console.log(err)
     res.send(err.message);
+    res.render('createblog')
   }
 };
 
