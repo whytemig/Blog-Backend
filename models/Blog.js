@@ -18,8 +18,7 @@ const blogSchema = new mongoose.Schema({
     default: new Date
   },
   img:{
-      data: Buffer,
-      contentType: String
+      type: String
   },
   votes: {
     type: Number,

@@ -3,7 +3,7 @@
   <div class="d-flex row justify-content-center m-auto my-3 p-3">
     <div class="col-lg-6 justify-content-center col-md-6">
       <form
-        action="/blog/createblog"
+        action="/createblog"
         method="post"
         enctype="multipart/form-data"
       >
@@ -46,7 +46,7 @@
 
           <div class="col-auto my-3">
             <label for="image" class="form-label fw-bold">Upload Image:</label>
-            <input type="file" class="form-control" id="image" name="image" />
+            <input type="file" class="form-control" id="image" name="image" required/>
           </div>
 
           <div class="col-auto my-3">
