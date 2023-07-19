@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const  User  = require('../models/users');
-const  myBlog  = require('../models/Blog');
-const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
+const  User  = require('../models/User');
+const  myBlog  = require('../models/User');
+const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog, getBlogByID, editBlog, editedBlog, deletedBlog } = require('../controllers/auth');
 const upload = require('../controllers/middleware/multer');
 
 
@@ -14,21 +14,31 @@ router.get('/signup', singupGet);
 
 router.post('/signup', singupPost);
 
-router.get('/createblog', createBlog);
-
-router.post('/createdblog', upload.single('image'), createdBlog);
-
 // login
 router.get('/login', loginInGet);
 
 router.post('/login', loginInPost);
 
+
+
 // get blog w/ image
-router.get('/createblog', getCreateBlog)
+router.get('/createblog', getCreateBlog);
 
 // post all blogs w/ image
 
-router.post('/createblog', upload, postCreatedBlog)
+router.post('/createblog', upload, postCreatedBlog);
+
+// router.get('/blogs/:id', getBlogByID);
+
+router.get('/editblog', editBlog);
+
+// put or patch edit a user
+
+router.post('/editblog', editedBlog);
+
+// delete user by id
+
+// router.get('/delete/:id', deletedBlog);
 
 
 module.exports = router;

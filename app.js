@@ -7,6 +7,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 // Parse Cookie header and populate req.cookies with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
 const blogRouter = require('./routes/routes');
+// var indexRouter = require('./routes/index');
+// var usersRouter = require('./routes/users');
 
 // Template view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -19,7 +21,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/', (req, res)=> res.send('Hello'))
+app.get('/', (req, res)=> res.render('index', { title: 'MyBlog' }))
+// app.use('/', indexRouter);
 app.use('/blog', blogRouter)
 
 const connect = async ()=>{

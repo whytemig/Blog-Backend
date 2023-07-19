@@ -1,10 +1,10 @@
 const  User  = require("../models/User");
-const  Blog  = require("../models/Blog");
+// const  Blog  = require("../models/Blog");
 // const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 const validator = require('validator');
 const bcrypt = require("bcrypt");
-const  myBlog  = require('../models/Blog');
+const  myBlog  = require('../models/User');
 const multer = require('multer');
 
 
@@ -125,6 +125,7 @@ const getCreateBlog = async (req, res) => {
       img,
     });
 };
+
 const postCreatedBlog = async (req, res) => {
   const { title, description, content, date, votes, img  } = req.body;
 
@@ -155,38 +156,150 @@ const postCreatedBlog = async (req, res) => {
   }
 };
 
-
-  
-
-
-const getCreateBlog = async (req, res) => {
-  const { title, description, date, img } = req.body;
-  res.render('createblog', {
-      title,
-      description,
-      date,
-      img,
-    });
-};
-
-const postCreatedBlog = async (req, res) => {
-  const { title, description, date,img, meta } = req.body;
+// create 
+const getBlogByID = (req, res) => {
   try {
-    const data = await Blog.create({
-      title,
+    // console.log(req.params);
+    // const id = req.params.id;
+
+    const { title, description, content, date, votes, img } = req.body;
+    console.log(title, description, content, date, votes, img);
+    // console.log(firstName, lastName, email);
+
+    res.render('blogs', {
+      title: 'Blogs',
       description,
+      content,
       date,
+      votes,
       img,
-      meta
     });
-    res
-      .send({data})
-      .status(201)
-  } catch (err) {
-    const error = errorHandle(err);
-    res.send(error);
+  } catch (error) {
+    console.error('Error while fetching blog data:', error);
+    res.status(500).send('Internal Server Error');
   }
 };
+
+// const editBlog = async (req, res) => {
+//   const id = req.params._id;
+//   const { title, description, content, date, votes, img } = await Blog.findByID(id);
+
+//   try {
+//     const data = await Blog.findOne({ username });
+//     console.log(title, description, content, date, votes, img);
+//     res.render("edit", { title: "Edit blog", title, description, content, date, votes, img });
+//   } catch (error) {
+//     console.error("Error while fetching blog data:", error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// }
+
+// const editBlog = async (req, res) => {
+//   const id = req.params.id;
+//   const { title, description, date, img } = req.body;
+//   try {
+
+//     const data = await myBlog.findOne({ title });
+//     res.render('edit', {
+//       display: "Edit Your Blog!",
+//         title,
+//         description,
+//         date,
+//         img,
+//       });
+//   } catch (error) {
+//     console.error('Error while fetching blog data:', error);
+//     res.status(500).send('Internal Server Error');
+//   }
+  
+// };
+
+const editBlog = async (req, res) => {
+  const id = req.params.id;
+  const { title, description, date, votes, img } = req.body;
+  try {
+    const blog = await myBlog.findById(id);
+
+    // Check if the blog exists
+    if (!blog) {
+      return res.status(404).send('Blog not found');
+    }
+
+    res.render('editblog', {
+      display: "Edit Your Blog!",
+      title,
+      description,
+      date,
+      votes,
+      img,
+    });
+  } catch (error) {
+    console.error('Error while fetching blog data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// const editBlog = async (req, res) => {
+//   const { title, description, content, date, votes, img  } = req.body;
+
+//   try {
+
+//     const { title, description, content, date, votes, img} = await myBlog.find();
+//     console.log( title, description, content, date, votes, img);
+//     const data = new myBlog({
+//       title,
+//       description,
+//       content,
+//       date,
+//       votes,
+//       img
+//     });
+
+//     let imgData = data.img;
+
+//     imgData.data = req.file.buffer;
+//     imgData.contentType = req.file.mimetype;
+    
+//     await data.save()
+
+//     console.log(data);
+   
+//     res.render("edit", { title: "Edit User", description, content, date, votes, img })
+
+//   } catch (err) {
+//     console.log(err)
+//     res.send(err.message);
+//   }
+// };
+
+const editedBlog = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const { title, description, content, date, votes, img } = req.body;
+    await Blog.update({ title, description, content, date, votes, img }, { where: { id: id } });
+    res.send("post request edit user");
+  } catch (error) {
+    console.error("Error while updating blog:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
+const deletedBlog = async (req, res) => {
+  const id = req.params.id;
+  try {
+
+    user.deleteOne({ name: 'Eddard Stark' });
+    const { title, description, content, date, votes, img } = req.body;
+    await Blog.destroy({ where: { id: id } });
+    res.send("User has been deleted!");
+  } catch (error) {
+    console.error("Error while deleting blog:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
 
 module.exports = {
   singupGet,
@@ -194,5 +307,9 @@ module.exports = {
   loginInGet,
   loginInPost,
   getCreateBlog,
-  postCreatedBlog
+  postCreatedBlog,
+  getBlogByID,
+  editBlog,
+  editedBlog,
+  deletedBlog
 };
