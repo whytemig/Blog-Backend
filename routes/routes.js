@@ -2,7 +2,7 @@ const router = require('express').Router();
 const  User  = require('../models/users');
 const  myBlog  = require('../models/Blog');
 const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
-const {getGalleryBlogs, getFullViewById} = require('../controllers/crud')
+const {getGalleryBlogs, getFullViewById, geteditBlog, posteditBlog} = require('../controllers/crud')
 const upload = require('../controllers/middleware/multer');
 
 
@@ -32,6 +32,14 @@ router.get('/blogs', getGalleryBlogs);
 // get route to show the fullview page by _id
 
 router.get('/fullview/:id', getFullViewById);
+
+
+// get the router to edit and then post the updated.
+router.get('/edit/:id', geteditBlog);
+
+router.post('/update/:id', upload, posteditBlog);
+
+
 
 
 module.exports = router;

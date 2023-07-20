@@ -100,7 +100,7 @@ const loginInPost = async (req, res) => {
       res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true });
 
       console.log( result);
-      res.redirect('/');
+      res.redirect('/blogs');
     
     }else{
       console.log('incorrect password')
@@ -124,6 +124,7 @@ const getCreateBlog = async (req, res) => {
       img,
     });
 };
+
 const postCreatedBlog = async (req, res) => {
   const { title, description, content, date, votes  } = req.body;
   const img = req.file.filename;

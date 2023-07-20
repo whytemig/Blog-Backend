@@ -1,0 +1,84 @@
+<%- include('../partials/header') %> 
+<%- include('../partials/nav') %>
+
+<div class="d-flex row justify-content-center m-auto my-3 p-3">
+    <div class="col-lg-6 justify-content-center col-md-6">
+      <form
+        action="/update/<%= data._id %>"
+        method="post"
+        enctype="multipart/form-data"
+      >
+      <input type="hidden" name="_method" value="PATCH">
+        <div class="row g-3 form-control p-1 my-1">
+          <div class="text-center">
+            <h1 class="mb-1"><%= display %></h1>
+          </div>
+
+          <div class="col-auto my-3">
+            <label for="title" class="form-label fw-bold">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" value="<%= data.title %>"/>
+          </div>
+
+          <div class="col-auto my-3">
+            <label for="description" class="form-label fw-bold"
+              >Description:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="description"
+              name="description"
+              min="50"
+              value="<%= data.title %>"
+              placeholder="Minnimum of 50 characters"
+            />
+          </div>
+
+          <div class="col-auto my-3">
+            <label for="content" class="form-label fw-bold">Content:</label>
+            <textarea
+              type="text"
+              class="form-control"
+              id="content"
+              name="content"
+              rows="5"
+              cols="30"
+              placeholder="Tell us...."
+              required
+            >
+            <%= data.content %>
+        </textarea>
+          </div>
+
+          <div class="col-auto my-3">
+            <label for="image" class="form-label fw-bold">Upload Image:</label>
+            <input type="file" class="form-control" id="image" name="image" required/>
+        </div>
+            <img src="/image/<%= data.img %>" width="50px" height="50px" class="img-thumbnail img-fluid">
+            <input type="hidden" name="old_image"  value="<%= data.img %>">
+           
+
+          <div class="col-auto my-3">
+            <a href="/blog"
+              ><button type="submit" class="btn btn-danger form-control">
+                Cancel
+              </button></a
+            >
+          </div>
+
+          <div class="col-auto my-3">
+            <button type="submit" class="btn btn-success form-control">
+         Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+
+<%- include('../partials/footer') %>
