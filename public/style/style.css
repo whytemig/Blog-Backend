@@ -1,5 +1,5 @@
-body{
-    background-color: rgb(238, 225, 208);
+body, .front{
+    background-color: rgb(143, 138, 138) !important;
     position:relative;
 }
 

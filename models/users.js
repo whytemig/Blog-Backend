@@ -40,6 +40,6 @@ const userShema = new mongoose.Schema({
 
 
 // variable storing the model with the data. 
-const User = mongoose.model('user', userShema);
+const User = mongoose.model('username', userShema);
 
 module.exports = User;

@@ -15,7 +15,7 @@ const blogSchema = new mongoose.Schema({
    },
    date: {
     type: Date,
-    default: new Date
+    default: Date.now()
   },
   img:{
       type: String
@@ -27,6 +27,6 @@ const blogSchema = new mongoose.Schema({
 });
 
 
-const myBlog = mongoose.model('Blogs', blogSchema);
+const myBlog = mongoose.model('myBlog', blogSchema);
 
 module.exports = myBlog;

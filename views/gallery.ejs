@@ -9,7 +9,7 @@
     <!-- ForEach loop for every data in the database. -->
 
     <% data.sort((a, b) => b.date - a.date).forEach((info)=>{ %>
-      <div class="card mb-3 mx-2 shadow rounded-3" style="max-width: 540px">
+      <div class="card mb-3 mx-2 shadow rounded-3 mt-3" style="max-width: 540px">
         <div class="row g-0">
           <div class="col-md-4">
             <img
@@ -21,17 +21,18 @@
           <div class="col-md-8">
             <div class="card-body mb-2">
               <h5 class="card-title text-center text-capitalize "><%= info.title %></h5>
-              <p class="card-text fade-in-text text-truncate" >
-                <%= info.description %>
+              <p class=" font-weight-light text-center ">
+                <%= info.description %>....There's more
               </p>
-              <p class="card-text mb-2">
-                <small class="text-body-secondary"><%= info.date.toLocaleString() %></small>
+              <p class="card-text mb-2 text-center fw-bold">
+                <small class="text-body-secondary"><%= info.date.toLocaleString('en-US') %></small>
               </p>
             </div>
-            <div class="card-footer d-flex justify-content-around">
+            <div class="card-footer d-flex justify-content-evenly">
               <a href="/fullview/<%= info._id %>" class="text-success" title="View Blog"><i class="gg-eye-alt"></i></a>
               <a href="/edit/<%= info._id %>" title="Edit Blog"><i class="gg-pen"></i></a>
               <a href="" class="text-danger fs-1" title="Delete Blog"><i class="gg-trash"></i></a>
+              <a href=""><p><%= info.votes %></p></a>
             </div>
           </div>
         </div>

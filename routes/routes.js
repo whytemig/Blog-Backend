@@ -39,6 +39,8 @@ router.get('/edit/:id', geteditBlog);
 
 router.post('/update/:id', upload, posteditBlog);
 
+// delete the blog and so a router is needed. 
+
 
 
 

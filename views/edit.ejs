@@ -52,14 +52,14 @@
 
           <div class="col-auto my-3">
             <label for="image" class="form-label fw-bold">Upload Image:</label>
-            <input type="file" class="form-control" id="image" name="image" required/>
+            <input type="file" class="form-control" id="image" name="image"/>
         </div>
             <img src="/image/<%= data.img %>" width="50px" height="50px" class="img-thumbnail img-fluid">
             <input type="hidden" name="old_image"  value="<%= data.img %>">
            
 
           <div class="col-auto my-3">
-            <a href="/blog"
+            <a href="/blogs"
               ><button type="submit" class="btn btn-danger form-control">
                 Cancel
               </button></a
