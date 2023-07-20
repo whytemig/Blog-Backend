@@ -1,4 +1,4 @@
-const  myBlog  = require('../models/Blog');
+const  myBlog  = require('../models/User').myBlog;
 
 const getGalleryBlogs = async (req, res) =>{
     const data = await myBlog.find();
@@ -25,9 +25,6 @@ try{
     console.log(err.message)
 }
 };
-
-
-
 
 module.exports = {
     getGalleryBlogs,

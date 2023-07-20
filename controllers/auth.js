@@ -1,10 +1,10 @@
-const  User  = require("../models/User");
+const  User  = require("../models/User").User;
 // const  Blog  = require("../models/Blog");
 // const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 const validator = require('validator');
 const bcrypt = require("bcrypt");
-const  myBlog  = require('../models/User');
+const  myBlog  = require('../models/User').myBlog;
 const multer = require('multer');
 const fs = require('fs');
 
@@ -25,14 +25,14 @@ const singupGet = (req, res) => {
 
 // Post functionality for the signin page.
 const singupPost =  async (req, res) => {
-  const id = req.params._id;
+  const id = req.params.id;
+  // console.log(id)
   let { firstName, lastName, username, email, password } = req.body;
   
   password = await bcrypt.hashSync(password, 10);
-  console.log(password)
-  
+  // console.log(password)
   try {
-    const user = await User.create({
+    const user = await new User({
       firstName,
       lastName,
       username,
@@ -40,10 +40,8 @@ const singupPost =  async (req, res) => {
       password,
       id
     });
-    
-   
-    console.log(password)
-
+    await user.save();
+    console.log(user);
     // After the user has been created, a web-token is given to verify the user.
     //create jwt token
     const token = await jwt.sign({ id }, "Mysecret", {
@@ -57,8 +55,8 @@ const singupPost =  async (req, res) => {
     res.redirect("/login");
 
   } catch (err) {
+    console.log(err);
     let text = err.message;
-
     if (validator.isEmail(email)) {
      res.redirect('/login')
     } else{
@@ -68,7 +66,6 @@ const singupPost =  async (req, res) => {
         display: "Sign Up"
       });
   }
-  
 };
 }
 
@@ -112,7 +109,6 @@ const loginInPost = async (req, res) => {
   }catch(err){
     console.log(err.message)
   }
-
 }
 
 const getCreateBlog = async (req, res) => {

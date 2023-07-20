@@ -3,8 +3,8 @@ const {isEmail} = require('validator');
 const { Schema } = mongoose;
 
 
-const userShema = new mongoose.Schema({
-   _id: Schema.Types.ObjectId,
+const userSchema = new mongoose.Schema({
+   // _id: Schema.Types.ObjectId,
    firstName: {
     type: String,
     require: [true, 'Please enter your First Name'],
@@ -38,7 +38,7 @@ const userShema = new mongoose.Schema({
     lowercase: true,
     minlength: [6, 'Password must be minimum of 6 characters'],
    },
-   Blog: [{ type: Schema.Types.ObjectId, ref: 'Blog' }]
+   blog: [{ type: Schema.Types.ObjectId, ref: 'myBlog' }]
 });
 
 const blogSchema = new mongoose.Schema({
@@ -61,18 +61,16 @@ const blogSchema = new mongoose.Schema({
     default: new Date
   },
   img:{
-      data: Buffer,
-      contentType: String
+      type: "string"
   },
   votes: {
     type: Number,
     default: 0
   },
-  User: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+  user: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
-const User = mongoose.model('User', userShema);
+const User = mongoose.model('User', userSchema);
 const myBlog = mongoose.model('Blogs', blogSchema);
 
-module.exports = User;
-module.exports = myBlog;
+module.exports = {User:User, myBlog:myBlog};

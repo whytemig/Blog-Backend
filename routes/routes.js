@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const  User  = require('../models/users');
-const  myBlog  = require('../models/Blog');
+const  User  = require('../models/User').User;
+const  myBlog  = require('../models/User').myBlog;
 const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
 const {getGalleryBlogs, getFullViewById} = require('../controllers/crud')
-const upload = require('../controllers/middleware/multer');
+const upload = require('../middleware/multer');
 
 
 router.get('/', (req, res)=>{
@@ -19,8 +19,6 @@ router.post('/signup', singupPost);
 router.get('/login', loginInGet);
 
 router.post('/login', loginInPost);
-
-
 
 // get blog w/ image
 router.get('/createblog', getCreateBlog);
