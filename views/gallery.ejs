@@ -8,7 +8,7 @@
   <div class="row row-cols-2 mx-2 d-flex justify-content-center mb-2">
     <!-- ForEach loop for every data in the database. -->
 
-    <% data.sort((a, b) => b.date - a.date).forEach((info)=>{ %>
+    <% data.reverse(data.updatedAt).forEach((info)=>{ %>
       <div class="card mb-3 mx-2 shadow rounded-3 mt-3" style="max-width: 540px">
         <div class="row g-0">
           <div class="col-md-4">

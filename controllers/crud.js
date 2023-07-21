@@ -72,6 +72,22 @@ const posteditBlog = async (req, res) =>{
         console.log(err.message)
     }
     
+};
+
+const getDeleteBlog = async (req, res)=>{
+    const id = req.params.id;
+
+    try{
+    const data = await myBlog.findByIdAndDelete(id);
+    res.redirect('/blogs', {
+        title: "My Blog",
+        display: "Checkout the Latest",
+        data
+    })
+    }catch(err){
+        console.log(err.message);
+    }
+
 }
 
 
@@ -81,5 +97,6 @@ module.exports = {
     getGalleryBlogs,
     getFullViewById,
     geteditBlog,
-    posteditBlog
+    posteditBlog,
+    getDeleteBlog
 };

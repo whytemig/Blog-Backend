@@ -2,7 +2,7 @@ const router = require('express').Router();
 const  User  = require('../models/users');
 const  myBlog  = require('../models/Blog');
 const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
-const {getGalleryBlogs, getFullViewById, geteditBlog, posteditBlog} = require('../controllers/crud')
+const {getGalleryBlogs, getFullViewById, geteditBlog, posteditBlog, getDeleteBlog} = require('../controllers/crud')
 const upload = require('../controllers/middleware/multer');
 
 
@@ -39,8 +39,9 @@ router.get('/edit/:id', geteditBlog);
 
 router.post('/update/:id', upload, posteditBlog);
 
-// delete the blog and so a router is needed. 
+// delete blog by id location. 
 
+router.get('/delete/:id', getDeleteBlog);
 
 
 
