@@ -12,6 +12,10 @@
           <h1 class="mb-1"><%= display %></h1>
         </div>
 
+        <% if (errorMessage.length > 0) { %>
+          <div class="text-danger p-3 text-center rounded-5"><%= errorMessage %></div>
+          <% } %>
+
         <div class="col-auto my-3">
           <label for="username" class="form-label fw-bold">Username:</label>
           <input
@@ -42,7 +46,7 @@
           </button>
         </div>
       </div>
-      <div><a href="/">Go Back</a></div>
+      <div class="text-center my-3"><a href="/signup" class="text-bold text-light fs-5 text-decoration-none">&#8592; Go Back</a></div>
 
     </form>
   </div>

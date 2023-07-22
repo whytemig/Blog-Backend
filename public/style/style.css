@@ -1,14 +1,15 @@
-body, .front{
-    background-color: rgb(143, 138, 138) !important;
+body, .front, .navbar{
+    background-color: rgba(193, 196, 195, 0.997) !important;
     position:relative;
 }
 
-footer {
+.footeryes {
     position: fixed;
     bottom: 0%;
     width: 100%;
     height: 30px;
-    border-top: solid 1px #eee;
+    background-color: rgba(193, 196, 195, 0.997) !important;
+    color: aliceblue;
   }
 
   .section{
@@ -21,4 +22,14 @@ footer {
     width:  200px;
     height: 200px;
     background-size: cover;
+  }
+
+  .fullviewimage{
+    width:  600px;
+    height: 300px;
+    background-size: cover;
+  }
+
+  .container-fluid{
+    box-sizing: border-box;
   }

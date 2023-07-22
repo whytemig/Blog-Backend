@@ -1,21 +1,33 @@
 <%- include('../partials/header') %> <%- include('../partials/nav') %>
 
 <body>
-  <section class="col-lg-6 col-md-6 text-center mx-auto">
-    <h1 class="display-3 text-dark fw-bold"><%= display %></h1>
-  </section>
 
-    <div class="container-fluid">
-        <h3 class="card-title text-center text-capitalize"><%= data.title %></h3>
-
-        <h5 class="card-title text-center text-capitalize text-muted">
-          <%= data.date.toLocaleDateString() %>
-        </h5>
-
-        <img src="/image/<%= data.img%>" alt="">
+  <a href="/blogs" class="text-bold text-light m-3">&#8592; Go Back</a>
     </div>
- 
+  <div class="container  mb-3 lh-1">
+    <div class="header text-center display-5">
+      <h2><%= data.title %></h2>
+    </div>
 
+    <div class="">
+      <h4 class="fst-italic text-light text-center"><%= data.description %></h4>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <img src="/image/<%= data.img%>" class="img-fluid fullviewimage mb-3" />
+    </div>
+    <p class="text-muted">Updated At: <%= data.createdAt.toLocaleString('en-US') %></p>
+
+    <div>
+      <p class="lh-base fs-4"><%= data.content %> Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus error veritatis eaque labore illo adipisci molestias amet aliquid? Officia voluptatem accusantium iusto ipsum ullam quaerat earum hic perferendis omnis sint!</p>
+    <a href="/blogs" class="text-bold text-light ">&#8592; Go Back</a>
+    </div>
+    
+    
+  </div>
+  
+  
+  
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
