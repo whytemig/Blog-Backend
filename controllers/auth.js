@@ -3,13 +3,11 @@ const jwt = require("jsonwebtoken");
 const validator = require('validator');
 const bcrypt = require("bcrypt");
 const  myBlog  = require('../models/User').myBlog;
-const multer = require('multer');
-const fs = require('fs');
 const saltRounds = 10;
 
 // Get the webpage and render the variables to the ejs page.
 
-const singupGet = (req, res) => {
+const signupGet = (req, res) => {
   
   res.render("signup", {
     title: "My Blog",
@@ -20,45 +18,43 @@ const singupGet = (req, res) => {
 
 
 // Post functionality for the signin page.
-const singupPost =  async (req, res) => {
-  const id = req.params.id;
-  // console.log(id)
+const signupPost =  async (req, res) => {
+  const _id = req.params._id
   let { firstName, lastName, username, email, password } = req.body;
-  
-  // password = await bcrypt.hashSync(password, 10);
-  // console.log(password)
+
   try {
-    let hashPassword = await bcrypt.hash(password, saltRounds);
+    
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+console.log("hpw", hashedPassword)
     const user = await new User({
       firstName,
       lastName,
       username,
       email,
-      password: hashPassword,
-      id
+      password: hashedPassword,
+      _id
     });
     await user.save();
-    console.log(user);
+
     // After the user has been created, a web-token is given to verify the user.
     //create jwt token
 
-    // const token = await jwt.sign({ id }, "Mysecret", {
-    //   expiresIn: "2h",
-    // });
+    const token = await jwt.sign({ _id: user._id }, "Mysecret", {
+      expiresIn: "2h",
+    });
 
-    // console.log(`token: ${token}`)
+    console.log(`token: ${token}`);
 
-    // //save token in cookie
-    // res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000 });
+    //save token in cookie
+    res.cookie("token", token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000 }); // 2 hours expiration
     res.redirect("/login");
 
   } catch (err) {
-    console.log(err);
     let text = err.message;
     if (validator.isEmail(email)) {
      res.redirect('/login')
     } else{
-      res.render("signup", { 
+      res.render("login", { 
         errorMessage: text.split('user validation failed:').join(),
         title: "My Blog",
         display: "Sign Up"
@@ -70,7 +66,7 @@ const singupPost =  async (req, res) => {
 // Get the login page and render the variables on the login page. 
 const loginInGet = (req, res) => {
   res.render("login", {
-    title: "My Blog",
+    title: "The Awesome Blog",
     display: "Login" });
 };
 
@@ -79,24 +75,24 @@ const loginInGet = (req, res) => {
 
 const loginInPost = async (req, res) => {
   const { username, password } = req.body;
-// const user = await User.findOne({where: { username } })
-const query = User.where({ username });
-const user = await query.findOne();
-console.log(user);
-if (user == null) {
-  res.render("login", { title: "Login", error: "User not Found" });
-} else {
-  // Load the hash from password db
-  console.log(password, user.password);
-  // const hashPassword = user.password;
-  // const profileID = user.id
-  await bcrypt.compare(password, user.password, function (err, result) {
-    console.log("result", result);
+  console.log(password);
+try {
+  const user = await User.findOne({where: { username } });
 
-  if (result) {
-    const token = jwt.sign({foo: "bar"}, 'mySecret', {expiresIn: "1h"})
-    console.log(token)
-    res.cookie("token", token)
+if (!user) {
+  return res.render("login", { title: "Login", error: "User not Found" });
+} 
+  // Load the hash from password db
+  const hashPassword = user.password;
+  console.log("Hashed Password from database:", hashPassword);
+  console.log("form password", password);
+  const passwordMatch = await bcrypt.compare(password, hashPassword);
+  console.log("Password Match Result:", passwordMatch);
+  
+  if (passwordMatch) {
+    const token = jwt.sign({ foo: "bar" }, "mySecret", { expiresIn: "1h" });
+    console.log(token);
+    res.cookie("token", token);
     res.redirect("/blogs");
   } else {
     res.render("login", {
@@ -104,39 +100,11 @@ if (user == null) {
       error: "Passwords do not match",
     });
   }
-});
+} catch (err) {
+  console.error("Error during login:", err);
+  res.status(500).render("login", { title: "Login", error: "Server error" });
 }
 }
-//   try {
-//     const user = await User.findOne({ username });
-
-//     if (user === null) {
-//       return res.render("login", { title: "Login", error: "User not found" });
-//     }
-
-//     const result = await bcrypt.compare(password, user.password);
-
-//     if (result) {
-//       const token = jwt.sign({ foo: 'bar' }, 'mySecret', { expiresIn: '1h' });
-//       // Save token in cookie
-//       console.log(result);
-//       res.cookie("token", token);
-//       res.redirect('/');
-//     } else {
-//       res.render("login", {
-//         title: "login",
-//         error: "Passwords do not match",
-//       });
-//     }
-//   } catch (err) {
-//     // Handle any errors that occurred during the try block
-//     console.error(err);
-//     res.render("login", {
-//       title: "login",
-//       error: "An error occurred during login",
-//     });
-//   }
-// };
 
 
 const getCreateBlog = async (req, res) => {
@@ -148,6 +116,7 @@ const getCreateBlog = async (req, res) => {
       description,
       date,
       img,
+      blog: []
     });
 };
 
@@ -227,38 +196,7 @@ const editBlog = async (req, res) => {
   }
 };
 
-// const editBlog = async (req, res) => {
-//   const { title, description, content, date, votes, img  } = req.body;
 
-//   try {
-
-//     const { title, description, content, date, votes, img} = await myBlog.find();
-//     console.log( title, description, content, date, votes, img);
-//     const data = new myBlog({
-//       title,
-//       description,
-//       content,
-//       date,
-//       votes,
-//       img
-//     });
-
-//     let imgData = data.img;
-
-//     imgData.data = req.file.buffer;
-//     imgData.contentType = req.file.mimetype;
-    
-//     await data.save()
-
-//     console.log(data);
-   
-//     res.render("edit", { title: "Edit User", description, content, date, votes, img })
-
-//   } catch (err) {
-//     console.log(err)
-//     res.send(err.message);
-//   }
-// };
 
 const editedBlog = async (req, res) => {
   const id = req.params.id;
@@ -290,8 +228,8 @@ const deletedBlog = async (req, res) => {
 
 
 module.exports = {
-  singupGet,
-  singupPost,
+  signupGet,
+  signupPost,
   loginInGet,
   loginInPost,
   getCreateBlog,
@@ -302,36 +240,3 @@ module.exports = {
   deletedBlog
 };
 
-
-// const loginInPost = async (req, res) => {
-//   const id = req.params._id;
-//   const {username, password} = req.body;
- 
-//   try{
-//   const data = await User.findOne({ username });
-
-//   if(data){
-//     const hashP = bcrypt.hashSync(data.password, 10);
-//     let result = await bcrypt.compare(data.password, hashP);
-
-//     console.log(password, hashP)
-
-//     if(result){
-//       const token = await jwt.sign({ id }, "Mysecret", {
-//         expiresIn: "2h",
-//       });
-//       // Save token in cookie
-//       res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true });
-
-//       console.log( result);
-//       res.redirect('/');
-    
-//     }else{
-//       console.log('incorrect password')
-//       res.status(401).json({ error: 'Invalid credentials' });
-//     }
-//   }
-//   }catch(err){
-//     console.log(err.message)
-//   }
-// }

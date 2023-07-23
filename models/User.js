@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const {isEmail} = require('validator');
 const { Schema } = mongoose;
+const bcrypt = require("bcrypt");
+
 
 
 const userSchema = new mongoose.Schema({
@@ -38,7 +40,9 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     minlength: [6, 'Password must be minimum of 6 characters'],
    },
-   blog: [{ type: Schema.Types.ObjectId, ref: 'myBlog' }]
+   blog: [{ 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'myBlog' }]
 });
 
 const blogSchema = new mongoose.Schema({
@@ -69,6 +73,21 @@ const blogSchema = new mongoose.Schema({
   },
   user: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
+
+// userSchema.pre('save', async function(next) {
+//     if (!this.isModified('password')) {
+//       return next();
+//     }
+  
+//     try {
+//       const salt = await bcrypt.genSalt(10); // The cost factor (10) determines the hashing complexity
+//       this.password = await bcrypt.hash(this.password, salt);
+//       next();
+//     } catch (error) {
+//       return next(error);
+//     }
+//   });
+
 
 const User = mongoose.model('User', userSchema);
 const myBlog = mongoose.model('Blogs', blogSchema);

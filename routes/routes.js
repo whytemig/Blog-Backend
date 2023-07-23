@@ -2,7 +2,6 @@ const router = require('express').Router();
 const  User  = require('../models/User').User;
 const userController = require("../controllers/auth");
 const  myBlog  = require('../models/User').myBlog;
-const findBlogs = require("../middleware/findBlogs");
 const jwt = require("jsonwebtoken");
 const auth = require('../controllers/auth');
 const crud = require('../controllers/crud');
@@ -20,9 +19,9 @@ router.get('/', (req, res) => {
 });
 
 // signup
-router.get('/signup', auth.singupGet);
+router.get('/signup', auth.signupGet);
 
-router.post('/signup', auth.singupPost);
+router.post('/signup', auth.signupPost);
 
 // login
 router.get('/login', auth.loginInGet);
