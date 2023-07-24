@@ -25,8 +25,8 @@ const signupPost =  async (req, res) => {
   try {
     
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-console.log("hpw", hashedPassword)
-    const user = await new User({
+    console.log("hpw", hashedPassword);
+    const user = await User.create({
       firstName,
       lastName,
       username,
@@ -34,7 +34,8 @@ console.log("hpw", hashedPassword)
       password: hashedPassword,
       _id
     });
-    await user.save();
+    console.log(user);
+    // await user.save();
 
     // After the user has been created, a web-token is given to verify the user.
     //create jwt token
@@ -47,7 +48,7 @@ console.log("hpw", hashedPassword)
 
     //save token in cookie
     res.cookie("token", token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000 }); // 2 hours expiration
-    res.redirect("/login");
+    res.redirect("/gallery");
 
   } catch (err) {
     let text = err.message;
@@ -77,29 +78,31 @@ const loginInPost = async (req, res) => {
   const { username, password } = req.body;
   console.log(password);
 try {
-  const user = await User.findOne({where: { username } });
-
-if (!user) {
-  return res.render("login", { title: "Login", error: "User not Found" });
-} 
+  // const user = await User.findOne({where: { username } });
+const query = User.where({ username });
+const user = await query.findOne();
+console.log(user);
+if (user == null) {
+  return res.send("hi im a message");
+} else {
   // Load the hash from password db
   const hashPassword = user.password;
   console.log("Hashed Password from database:", hashPassword);
   console.log("form password", password);
   const passwordMatch = await bcrypt.compare(password, hashPassword);
   console.log("Password Match Result:", passwordMatch);
-  
   if (passwordMatch) {
     const token = jwt.sign({ foo: "bar" }, "mySecret", { expiresIn: "1h" });
     console.log(token);
     res.cookie("token", token);
-    res.redirect("/blogs");
+    res.redirect("/gallery");
   } else {
     res.render("login", {
       title: "Login",
       error: "Passwords do not match",
     });
   }
+}
 } catch (err) {
   console.error("Error during login:", err);
   res.status(500).render("login", { title: "Login", error: "Server error" });
@@ -138,7 +141,7 @@ const postCreatedBlog = async (req, res) => {
     console.log(data);
 
    
-    res.redirect('/blogs')
+    res.redirect('/gallery')
 
   } catch (err) {
     console.log(err)
