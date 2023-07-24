@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const auth = require('../controllers/auth');
 const crud = require('../controllers/crud');
 const upload = require('../middleware/multer');
-// const authCheck = require("../middleware/authCheck");
+const authCheck = require("../middleware/authCheck");
 
 
 // router.get('/', authCheck, (req, res) => {
@@ -29,7 +29,7 @@ router.get('/login', auth.loginInGet);
 router.post('/login', auth.loginInPost);
 
 // get blog w/ image
-router.get('/createblog', auth.getCreateBlog);
+router.get('/createblog', authCheck, auth.getCreateBlog);
 
 // post all blogs w/ image
 

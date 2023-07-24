@@ -92,10 +92,11 @@ if (user == null) {
   const passwordMatch = await bcrypt.compare(password, hashPassword);
   console.log("Password Match Result:", passwordMatch);
   if (passwordMatch) {
-    const token = jwt.sign({ foo: "bar" }, "mySecret", { expiresIn: "1h" });
+
+    const token = jwt.sign({ foo: user._id }, "mySecret", { expiresIn: "1h" });
     console.log(token);
     res.cookie("token", token);
-    res.redirect("/gallery");
+    res.redirect("/blogs");
   } else {
     res.render("login", {
       title: "Login",
@@ -112,14 +113,14 @@ if (user == null) {
 
 const getCreateBlog = async (req, res) => {
   const { title, description, date, img } = req.body;
-
+  const userProfileID = req.user.id;
+  console.log('User Profile ID:', userProfileID);
   res.render('createblog', {
     display: "Create a Blog",
       title,
       description,
       date,
       img,
-      blog: []
     });
 };
 
@@ -242,5 +243,4 @@ module.exports = {
   editedBlog,
   deletedBlog
 };
-console.log("testing")
 

@@ -40,13 +40,12 @@ const userSchema = new mongoose.Schema({
     minlength: [6, 'Password must be minimum of 6 characters'],
    },
    blog: [{ 
-      type: mongoose.Schema.Types.ObjectId, 
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'myBlog' }]
 });
-
+// will need to make association 
 const blogSchema = new mongoose.Schema({
    title: {
-    type: Schema.Types.ObjectId, ref: 'User',
     type: String,
     require: [true, 'Please enter the title of your blog']
    },

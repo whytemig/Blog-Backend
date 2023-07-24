@@ -30,8 +30,12 @@
             </div>
             <div class="card-footer d-flex justify-content-around">
               <a href="/fullview/<%= info._id %>" class="text-success" title="View Blog"><i class="gg-eye-alt"></i></a>
-              <a href="" title="Edit Blog"><i class="gg-pen"></i></a>
-              <a href="" class="text-danger fs-1" title="Delete Blog"><i class="gg-trash"></i></a>
+              <form action="/editblog" method="post">
+                <input name="blogID"  type= "hidden" value="<%= blog.dataValues.id %>">
+                <input type="hidden" name="profileID" value="<%= userProfileID %>"> Replace with the actual user's profile ID
+              <a href="/editblog/<%= blog.dataValues.id %>" title="Edit Blog"><i class="gg-pen"></i></a>
+              <a href="/deleteblog/<%= blog.dataValues.id %>" class="text-danger fs-1" title="Delete Blog"><i class="gg-trash"></i></a>
+            </form>
             </div>
           </div>
         </div>
