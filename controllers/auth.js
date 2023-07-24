@@ -242,4 +242,5 @@ module.exports = {
   editedBlog,
   deletedBlog
 };
+console.log("testing")
 
