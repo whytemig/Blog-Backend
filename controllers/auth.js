@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const myBlog = require("../models/Blog");
-// const multer = require('multer');
-// const fs = require('fs');
+const authorizeMe = require('../controllers/middleware/token');
+
 
 // Get the webpage and render the variables to the ejs page.
 const singupGet = (req, res) => {
@@ -28,8 +28,8 @@ const singupPost = async (req, res) => {
       display: "Sign Up",
     });
   }else{
+    
     password = await bcrypt.hashSync(password, 10);
-
     try {
       const user = await User.create({
         firstName,
@@ -39,6 +39,9 @@ const singupPost = async (req, res) => {
         password,
         id,
       });
+      
+      
+
       console.log(`User Created: ${user}`)
       res.redirect("/login");
     } catch (err) {
@@ -69,7 +72,7 @@ const loginInGet = (req, res) => {
 
 // find the user by id, compare password, then Authorize them to enter the official site.
 const loginInPost = async (req, res) => {
-  const id = req.params._id;
+  const id = req.params.id;
   const { username, password } = req.body;
 
   try {
@@ -80,16 +83,18 @@ const loginInPost = async (req, res) => {
       let result = await bcrypt.compare(data.password, hashP);
 
       if (result) {
-        const token = await jwt.sign({ id }, "Mysecret", {
-          expiresIn: "2h",
+        // provide the user with a token.
+        const token = await jwt.sign({ username: data.username }, "Mysecret", {
+          expiresIn: "1h"
         });
         // Save token in cookie
-        res.cookie("access-token", token, { httpOnly: true, maxAge: 3600000 });
+        res.cookie("access", token, { httpOnly: true, maxAge: 3600000 });
 
         console.log(`{
           Authentification: ${result}, token: ${token}
         }`);
         res.redirect("/blogs");
+  
       }
     } else{
       res.render("login", {

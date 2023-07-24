@@ -4,6 +4,7 @@ const  myBlog  = require('../models/Blog');
 const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
 const {getGalleryBlogs, getFullViewById, geteditBlog, posteditBlog, getDeleteBlog} = require('../controllers/crud')
 const upload = require('../controllers/middleware/multer');
+const authorizeMe = require('../controllers/middleware/token');
 
 
 router.get('/', (req, res)=>{
@@ -18,16 +19,16 @@ router.post('/signup', singupPost);
 // login
 router.get('/login', loginInGet);
 
-router.post('/login', loginInPost);
+router.post('/login', loginInPost); 
 
 // get blog w/ image
-router.get('/createblog', getCreateBlog)
+router.get('/createblog',authorizeMe, getCreateBlog)
 
 // post all blogs w/ image
 
 router.post('/createblog', upload, postCreatedBlog);
 
-router.get('/blogs', getGalleryBlogs);
+router.get('/blogs',authorizeMe, getGalleryBlogs);
 
 // get route to show the fullview page by _id
 
