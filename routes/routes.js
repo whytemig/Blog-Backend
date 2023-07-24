@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const  User  = require('../models/users');
 const  myBlog  = require('../models/Blog');
-const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog } = require('../controllers/auth');
+const { singupPost, singupGet, loginInGet, loginInPost, getCreateBlog, postCreatedBlog, getLogout } = require('../controllers/auth');
 const {getGalleryBlogs, getFullViewById, geteditBlog, posteditBlog, getDeleteBlog} = require('../controllers/crud')
 const upload = require('../controllers/middleware/multer');
 const authorizeMe = require('../controllers/middleware/token');
@@ -20,6 +20,9 @@ router.post('/signup', singupPost);
 router.get('/login', loginInGet);
 
 router.post('/login', loginInPost); 
+
+// log out 
+router.get('/logout', getLogout); 
 
 // get blog w/ image
 router.get('/createblog',authorizeMe, getCreateBlog)

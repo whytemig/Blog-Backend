@@ -151,6 +151,14 @@ const postCreatedBlog = async (req, res) => {
   }
 };
 
+// clear the cookie and redirect the user to the logou page. 
+const getLogout = (req, res)=>{
+res.clearCookie('access');
+res.redirect('/login');
+
+
+}
+
 module.exports = {
   singupGet,
   singupPost,
@@ -158,4 +166,5 @@ module.exports = {
   loginInPost,
   getCreateBlog,
   postCreatedBlog,
+  getLogout
 };
