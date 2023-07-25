@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Rubik:wght@600&display=swap');
+
+*{
+  font-family: 'Rubik', sans-serif;
+}
+
 body, .front, .navbar{
     background-color: rgba(193, 196, 195, 0.997) !important;
     position:relative;
